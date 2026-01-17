@@ -31,7 +31,6 @@ if (contactForm) {
 }
 
 // Add scroll effect to header
-let lastScroll = 0;
 const header = document.querySelector('header');
 
 window.addEventListener('scroll', () => {
@@ -42,8 +41,6 @@ window.addEventListener('scroll', () => {
   } else {
     header.style.boxShadow = 'none';
   }
-  
-  lastScroll = currentScroll;
 });
 
 // Animate elements on scroll
