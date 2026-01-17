@@ -126,37 +126,44 @@ contactForm.addEventListener('submit', (e) => {
         message: document.getElementById('message').value
     };
 
-    // Show success message
-    alert('Obrigado por entrar em contato! Sua mensagem foi recebida.');
+    // Show success message using a simple inline approach
+    const button = contactForm.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    button.textContent = '✓ Mensagem Enviada!';
+    button.style.backgroundColor = '#10B981';
     
     // Reset form
     contactForm.reset();
+    
+    // Reset button after 3 seconds
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = '';
+    }, 3000);
     
     // In a real application, you would send this data to a server
     console.log('Form submitted:', formData);
 });
 
-// Add typing effect to hero title
+// Add fade-in effect to hero title (removed typing effect to preserve HTML tags)
 const heroTitle = document.querySelector('.hero-title');
 if (heroTitle) {
-    const text = heroTitle.innerHTML;
-    heroTitle.innerHTML = '';
-    let i = 0;
-    
-    function typeWriter() {
-        if (i < text.length) {
-            heroTitle.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
-        }
-    }
-    
-    // Start typing effect after a short delay
-    setTimeout(typeWriter, 500);
+    heroTitle.style.opacity = '0';
+    setTimeout(() => {
+        heroTitle.style.transition = 'opacity 0.8s ease';
+        heroTitle.style.opacity = '1';
+    }, 500);
 }
 
-// Parallax effect for hero section
+// Parallax effect for hero section with throttling
+let lastScrollTime = 0;
+const scrollThrottle = 16; // ~60fps
+
 window.addEventListener('scroll', () => {
+    const now = Date.now();
+    if (now - lastScrollTime < scrollThrottle) return;
+    lastScrollTime = now;
+    
     const scrolled = window.pageYOffset;
     const heroContent = document.querySelector('.hero-content');
     const heroImage = document.querySelector('.hero-image');
@@ -172,41 +179,8 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Add cursor trail effect
-document.addEventListener('mousemove', (e) => {
-    const trail = document.createElement('div');
-    trail.className = 'cursor-trail';
-    trail.style.left = e.pageX + 'px';
-    trail.style.top = e.pageY + 'px';
-    
-    document.body.appendChild(trail);
-    
-    setTimeout(() => {
-        trail.remove();
-    }, 1000);
-});
+// Removed cursor trail effect for better performance
 
-// Add click effect to buttons
-const buttons = document.querySelectorAll('.btn');
-buttons.forEach(button => {
-    button.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-        this.appendChild(ripple);
-        
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-        
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
-    });
-});
+// Add simple hover effect to buttons (removed ripple effect without CSS)
 
 console.log('Portfolio loaded successfully! 🚀');
